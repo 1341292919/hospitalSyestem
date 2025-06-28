@@ -38,9 +38,9 @@ jobs:
     - name: Build
       run: |
         if [ "${{ matrix.goos }}" = "windows" ]; then
-          go build -o LMS-${{ matrix.goos }}-${{ matrix.goarch }}.exe
+          go build -o HMS-${{ matrix.goos }}-${{ matrix.goarch }}.exe
         else
-          go build -o LMS-${{ matrix.goos }}-${{ matrix.goarch }}
+          go build -o HMS-${{ matrix.goos }}-${{ matrix.goarch }}
         fi
       env:
         GOOS: ${{ matrix.goos }}
