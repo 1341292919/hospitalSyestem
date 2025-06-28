@@ -1,0 +1,13 @@
+mysql:
+  addr: 127.0.0.1:3306
+  database: hospital
+  username: root
+  password: root
+  charset: utf8mb4
+
+services:
+  main:
+    name : main
+    load-balance: true
+    addr:
+      - 127.0.0.1:10000

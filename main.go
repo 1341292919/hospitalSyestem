@@ -5,16 +5,27 @@ package main
 import (
 	"Hospital/biz/dal"
 	"Hospital/biz/middleware/jwt"
+	"Hospital/biz/router"
+	"Hospital/config"
+	"Hospital/pkg/utils"
+	"github.com/bytedance/gopkg/util/logger"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
 func init() {
+	config.Init("main")
 	dal.Init()
 	jwt.Init()
 }
 func main() {
-	h := server.Default()
-
-	register(h)
+	listenAddr, err := utils.GetAvailablePort()
+	if err != nil {
+		logger.Fatalf("get available port failed, err: %v", err)
+	}
+	h := server.New(
+		server.WithHostPorts(listenAddr),
+		server.WithHandleMethodNotAllowed(true),
+	)
+	router.GeneratedRegister(h)
 	h.Spin()
 }

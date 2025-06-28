@@ -1,7 +1,7 @@
 package db
 
 import (
-	"Hospital/pkg/constants"
+	"Hospital/pkg/utils"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -12,7 +12,11 @@ var DB *gorm.DB
 
 func Init() {
 	var err error
-	DB, err = gorm.Open(mysql.Open(constants.MySQLDSN), &gorm.Config{
+	dsn, err := utils.GetMysqlDSN()
+	if err != nil {
+		panic(err)
+	}
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		SkipDefaultTransaction: true,
 	})
 	hlog.Infof("db init suceess")

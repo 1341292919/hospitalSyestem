@@ -8,7 +8,6 @@ const (
 const (
 	ParamVerifyErrorCode  = 20000 + iota
 	ParamMissingErrorCode //参数缺失
-	ParamLogicalErrorCode
 )
 
 const (
@@ -19,23 +18,6 @@ const (
 )
 
 const (
-	RepeatOperationErrorCode = 40000 + iota
-	ServiceUserExistCode
-	ServiceUserNotExistCode
-	ServiceUserPasswordError
-	ServiceVideoNotExist
-	ServiceCommentNotExist
-	ServiceRepeatOperation
-	ServiceNoAuthority
-)
-
-const (
-	InternalServiceErrorCode  = 50000 + iota // 内部服务错误
-	InterFileProcessErrorCode                //文件处理错误
+	InternalServiceErrorCode = 50000 + iota // 内部服务错误
 	InternalDatabaseErrorCode
-	InternalRedisErrorCode // Redis错误
-	InternalOTtelErrorCode
-	InternalKafkaErrorCode
-	InternalRPCErrorCode //
-	InternalWebSocketError
 )
