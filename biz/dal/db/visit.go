@@ -20,12 +20,22 @@ func CreateVisitMessage(ctx context.Context, v *VisitMessage) error {
 func QueryVisitMessage(ctx context.Context, patientId int64) ([]*VisitMessage, int64, error) {
 	var v []*VisitMessage
 	var count int64
-	err := DB.WithContext(ctx).
-		Table(constants.TableVisit).
-		Where("patient_id = ?", patientId).
-		Count(&count).
-		Find(&v).
-		Error
+	var err error
+
+	if patientId == 0 {
+		err = DB.WithContext(ctx).
+			Table(constants.TableVisit).
+			Count(&count).
+			Find(&v).
+			Error
+	} else {
+		err = DB.WithContext(ctx).
+			Table(constants.TableVisit).
+			Where("patient_id = ?", patientId).
+			Count(&count).
+			Find(&v).
+			Error
+	}
 	if err != nil {
 		return nil, -1, errno.NewErrNo(errno.InternalDatabaseErrorCode, "Failed to find visitMessage")
 	}
