@@ -19,13 +19,11 @@ CREATE TABLE diagnoses (
                            patient_id INT NOT NULL COMMENT '患者ID',
                            doctor_id VARCHAR(20) NOT NULL COMMENT '主治医生ID（无外键约束）',
                            disease_name VARCHAR(100) NOT NULL COMMENT '疾病名称',
-                           diagnosis_time DATETIME NOT NULL COMMENT '诊断时间',
-                           notes TEXT COMMENT '备注信息',
-
                            description TEXT NOT NULL COMMENT '症状描述',
                            start_time DATETIME COMMENT '开始时间',
                            signs_description TEXT COMMENT '体征描述',
-    
+                           diagnosis_time DATETIME NOT NULL COMMENT '诊断时间',
+                           notes TEXT COMMENT '备注信息',
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 
                            FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
@@ -38,22 +36,8 @@ CREATE TABLE diagnoses (
                            INDEX idx_diagnosis_time (diagnosis_time) COMMENT '诊断时间索引'
 ) COMMENT '诊断记录表';
 
--- 3. 症状及体征表
-CREATE TABLE symptoms (
-                          symptom_id INT PRIMARY KEY AUTO_INCREMENT COMMENT '症状ID',
-                          diagnosis_id INT NOT NULL COMMENT '关联诊断ID',
 
-                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-
-                          FOREIGN KEY (diagnosis_id) REFERENCES diagnoses(diagnosis_id)
-                              ON DELETE CASCADE
-                              ON UPDATE CASCADE,
-
-                          INDEX idx_symptom_diagnosis (diagnosis_id) COMMENT '诊断ID索引',
-                          INDEX idx_symptom_start_time (start_time) COMMENT '开始时间索引'
-) COMMENT '症状及体征表';
-
--- 4. 创建视图
+-- 3. 创建视图
 CREATE OR REPLACE VIEW patient_medical_records
 AS
 SELECT

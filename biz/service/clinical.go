@@ -28,17 +28,16 @@ func (s *ClinicalService) CreatePatient(req *clinical.AddPatientRequest) error {
 }
 func (s *ClinicalService) CreateDiagnose(req *clinical.AddDiagnoseRequest) error {
 	return db.CreateDiagnose(s.ctx, &db.Diagnose{
-		DiagnosisId:   req.DiagnosisID,
-		PatientId:     req.PatientID,
-		DoctorId:      req.DoctorID,
-		DiseaseName:   req.DiseaseName,
-		DiagnosisTime: time.Unix(req.DiagnosisTime, 0),
-		CreatedAT:     time.Now(),
-		Notes:         req.Notes,
-
+		DiagnosisId:      req.DiagnosisID,
+		PatientId:        req.PatientID,
+		DoctorId:         req.DoctorID,
+		DiseaseName:      req.DiseaseName,
+		DiagnosisTime:    time.Unix(req.DiagnosisTime, 0),
 		Description:      req.Description,
 		StartTime:        time.Unix(req.StartTime, 0),
 		SignsDescription: req.SignsDescription,
+		CreatedAT:        time.Now(),
+		Notes:            req.Notes,
 	})
 }
 
