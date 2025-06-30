@@ -25,3 +25,14 @@ func EpidemicCase(data *db.EpidemicCase) *model.EpidemicCase {
 		UpdateTime:        data.UpdateTime.Format("2006-01-02 15:04:05"),
 	}
 }
+
+func EpidemicCaseList(data []*db.EpidemicCase) *model.EpidemicCaseList {
+	epidemicCases := make([]*model.EpidemicCase, 0)
+	for _, v := range data {
+		epidemicCases = append(epidemicCases, EpidemicCase(v))
+	}
+	return &model.EpidemicCaseList{
+		Items: epidemicCases,
+		Total: int64(len(epidemicCases)), // 计算总数
+	}
+}

@@ -26,11 +26,11 @@ struct QueryEpidemicCaseByIdResponse{
     2:model.EpidemicCase data
 }
 struct QueryEpidemicCaseByPatientRequest{
-        2: required i64 patient_id,              // 患者ID
+        1: required i64 patient_id,              // 患者ID
 }
 struct QueryEpidemicCaseByPatientResponse{
     1: model.BaseResp base,
-    2:model.EpidemicCase data
+    2:model.EpidemicCaseList data
 }
 service EpidemicService {
     AddEpidemicCaseResponse AddEpidemicCase(1:AddEpidemicCaseRequest req)(api.post="/epidemic/add"),

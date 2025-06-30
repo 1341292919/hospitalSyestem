@@ -34,7 +34,7 @@ func (s *EpidemicService) CreatEpidemicCase(req *epidemic.AddEpidemicCaseRequest
 	})
 }
 
-func (s *EpidemicService) QueryEpidemicCaseByPatient(req *epidemic.QueryEpidemicCaseByPatientRequest) (*db.EpidemicCase, error) {
+func (s *EpidemicService) QueryEpidemicCaseByPatient(req *epidemic.QueryEpidemicCaseByPatientRequest) ([]*db.EpidemicCase, error) {
 	return db.QueryEpidemicCase(s.ctx, req.PatientID)
 }
 
