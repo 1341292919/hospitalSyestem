@@ -13,17 +13,16 @@ type Patient struct {
 }
 
 type Diagnose struct {
-	DiagnosisId   int64
-	PatientId     int64
-	DoctorId      int64
-	DiseaseName   string
-	DiagnosisTime time.Time
-	Notes         string
-	CreatedAT     time.Time
-
+	DiagnosisId      int64
+	PatientId        int64
+	DoctorId         int64
+	DiseaseName      string
+	DiagnosisTime    time.Time
 	Description      string
 	StartTime        time.Time
 	SignsDescription string
+	Notes            string
+	CreatedAT        time.Time
 }
 
 type Case struct {
