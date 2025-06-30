@@ -8,7 +8,6 @@ import (
 	"Hospital/biz/service"
 	"Hospital/pkg/errno"
 	"context"
-
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -71,7 +70,8 @@ func QueryEpidemicCaseByPatient(ctx context.Context, c *app.RequestContext) {
 		pack.SendFailResponse(c, errno.ConvertErr(err))
 		return
 	}
-	resp.Data = pack.EpidemicCase(v)
+
+	resp.Data = pack.EpidemicCaseList(v)
 	resp.Base = pack.BuildBaseResp(errno.Success)
 	pack.SendResponse(c, resp)
 }

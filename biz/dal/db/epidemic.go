@@ -27,13 +27,23 @@ func CreatEpidemicCase(ctx context.Context, epidemicCase *EpidemicCase) error {
 	}
 	return nil
 }
-func QueryEpidemicCase(ctx context.Context, patientId int64) (*EpidemicCase, error) {
-	var s *EpidemicCase
-	err := DB.WithContext(ctx).
-		Table(constants.TableEpidemicCase).
-		Where("patient_id = ?", patientId).
-		First(&s).
-		Error
+func QueryEpidemicCase(ctx context.Context, patientId int64) ([]*EpidemicCase, error) {
+	var s []*EpidemicCase
+	var err error
+
+	if patientId == 0 {
+		err = DB.WithContext(ctx).
+			Table(constants.TableEpidemicCase).
+			Find(&s).
+			Error
+	} else {
+		err = DB.WithContext(ctx).
+			Table(constants.TableEpidemicCase).
+			Where("patient_id = ?", patientId).
+			Find(&s).
+			Error
+	}
+
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, errno.NewErrNo(errno.InternalServiceErrorCode, "patient‘s case not exist")
@@ -47,18 +57,11 @@ func QueryEpidemicCaseById(ctx context.Context, caseId int64) (*EpidemicCase, er
 	var s *EpidemicCase
 	var err error
 
-	if caseId == 0 {
-		err = DB.WithContext(ctx).
-			Table(constants.TableEpidemicCase).
-			First(&s).
-			Error
-	} else {
-		err = DB.WithContext(ctx).
-			Table(constants.TableEpidemicCase).
-			Where("case_id = ?", caseId).
-			First(&s).
-			Error
-	}
+	err = DB.WithContext(ctx).
+		Table(constants.TableEpidemicCase).
+		Where("case_id = ?", caseId).
+		First(&s).
+		Error
 
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {

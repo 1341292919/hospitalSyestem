@@ -1178,7 +1178,7 @@ func (p *QueryEpidemicCaseByIdResponse) String() string {
 
 type QueryEpidemicCaseByPatientRequest struct {
 	// 患者ID
-	PatientID int64 `thrift:"patient_id,2,required" form:"patient_id,required" json:"patient_id,required" query:"patient_id,required"`
+	PatientID int64 `thrift:"patient_id,1,required" form:"patient_id,required" json:"patient_id,required" query:"patient_id,required"`
 }
 
 func NewQueryEpidemicCaseByPatientRequest() *QueryEpidemicCaseByPatientRequest {
@@ -1193,7 +1193,7 @@ func (p *QueryEpidemicCaseByPatientRequest) GetPatientID() (v int64) {
 }
 
 var fieldIDToName_QueryEpidemicCaseByPatientRequest = map[int16]string{
-	2: "patient_id",
+	1: "patient_id",
 }
 
 func (p *QueryEpidemicCaseByPatientRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -1215,9 +1215,9 @@ func (p *QueryEpidemicCaseByPatientRequest) Read(iprot thrift.TProtocol) (err er
 		}
 
 		switch fieldId {
-		case 2:
+		case 1:
 			if fieldTypeId == thrift.I64 {
-				if err = p.ReadField2(iprot); err != nil {
+				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
 				issetPatientID = true
@@ -1238,7 +1238,7 @@ func (p *QueryEpidemicCaseByPatientRequest) Read(iprot thrift.TProtocol) (err er
 	}
 
 	if !issetPatientID {
-		fieldId = 2
+		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -1259,7 +1259,7 @@ RequiredFieldNotSetError:
 	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_QueryEpidemicCaseByPatientRequest[fieldId]))
 }
 
-func (p *QueryEpidemicCaseByPatientRequest) ReadField2(iprot thrift.TProtocol) error {
+func (p *QueryEpidemicCaseByPatientRequest) ReadField1(iprot thrift.TProtocol) error {
 
 	var _field int64
 	if v, err := iprot.ReadI64(); err != nil {
@@ -1277,8 +1277,8 @@ func (p *QueryEpidemicCaseByPatientRequest) Write(oprot thrift.TProtocol) (err e
 		goto WriteStructBeginError
 	}
 	if p != nil {
-		if err = p.writeField2(oprot); err != nil {
-			fieldId = 2
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
 			goto WriteFieldError
 		}
 	}
@@ -1299,8 +1299,8 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *QueryEpidemicCaseByPatientRequest) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("patient_id", thrift.I64, 2); err != nil {
+func (p *QueryEpidemicCaseByPatientRequest) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("patient_id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteI64(p.PatientID); err != nil {
@@ -1311,9 +1311,9 @@ func (p *QueryEpidemicCaseByPatientRequest) writeField2(oprot thrift.TProtocol) 
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *QueryEpidemicCaseByPatientRequest) String() string {
@@ -1325,8 +1325,8 @@ func (p *QueryEpidemicCaseByPatientRequest) String() string {
 }
 
 type QueryEpidemicCaseByPatientResponse struct {
-	Base *model.BaseResp     `thrift:"base,1" form:"base" json:"base" query:"base"`
-	Data *model.EpidemicCase `thrift:"data,2" form:"data" json:"data" query:"data"`
+	Base *model.BaseResp         `thrift:"base,1" form:"base" json:"base" query:"base"`
+	Data *model.EpidemicCaseList `thrift:"data,2" form:"data" json:"data" query:"data"`
 }
 
 func NewQueryEpidemicCaseByPatientResponse() *QueryEpidemicCaseByPatientResponse {
@@ -1345,9 +1345,9 @@ func (p *QueryEpidemicCaseByPatientResponse) GetBase() (v *model.BaseResp) {
 	return p.Base
 }
 
-var QueryEpidemicCaseByPatientResponse_Data_DEFAULT *model.EpidemicCase
+var QueryEpidemicCaseByPatientResponse_Data_DEFAULT *model.EpidemicCaseList
 
-func (p *QueryEpidemicCaseByPatientResponse) GetData() (v *model.EpidemicCase) {
+func (p *QueryEpidemicCaseByPatientResponse) GetData() (v *model.EpidemicCaseList) {
 	if !p.IsSetData() {
 		return QueryEpidemicCaseByPatientResponse_Data_DEFAULT
 	}
@@ -1439,7 +1439,7 @@ func (p *QueryEpidemicCaseByPatientResponse) ReadField1(iprot thrift.TProtocol) 
 	return nil
 }
 func (p *QueryEpidemicCaseByPatientResponse) ReadField2(iprot thrift.TProtocol) error {
-	_field := model.NewEpidemicCase()
+	_field := model.NewEpidemicCaseList()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}

@@ -99,3 +99,8 @@ struct EpidemicCase {
     11: required i16 close_contacts,            // 密接人数（smallint 对应 i16）
     12: required string update_time
 }
+
+struct EpidemicCaseList{
+    1: required list <EpidemicCase> items,    // 病例列表
+    2: required i64 total,                      // 总数量
+}
