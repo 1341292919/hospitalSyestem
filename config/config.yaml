@@ -1,8 +1,8 @@
 mysql:
-  addr: 127.0.0.1:3306
+  addr: 192.168.1.150:3306
   database: hospital
   username: root
-  password: root
+  password: PASSWORD
   charset: utf8mb4
 
 services:

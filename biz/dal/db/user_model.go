@@ -62,3 +62,8 @@ type UpdateNurseRequest struct {
 	ContactPhone string
 	Id           int64
 }
+type UpdateAdminRequest struct {
+	Name         string
+	ContactPhone string
+	Id           int64
+}

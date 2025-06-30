@@ -152,3 +152,25 @@ func QueryUserList(ctx context.Context, c *app.RequestContext) {
 	resp.Data = pack.UserList(userListResp)
 	pack.SendResponse(c, resp)
 }
+
+// UpdateAdmin .
+// @router /user/admin/update [GET]
+func UpdateAdmin(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req user.UpdateAdminRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		pack.SendFailResponse(c, errno.NewErrNo(errno.ParamMissingErrorCode, "param missing:"+err.Error()))
+		return
+	}
+
+	resp := new(user.UpdateAdminResponse)
+
+	err = service.NewUserService(ctx, c).UpdateAdmin(&req)
+	if err != nil {
+		pack.SendFailResponse(c, errno.ConvertErr(err))
+		return
+	}
+	resp.Base = pack.BuildBaseResp(errno.Success)
+	pack.SendResponse(c, resp)
+}
