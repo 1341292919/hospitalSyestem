@@ -80,3 +80,7 @@ func (s *UserService) NewUser(req *user.NewUserRequest) (*db.User, error) {
 func (s *UserService) QueryUser(req *user.QueryUserRequest) (*db.User, error) {
 	return db.GetUserMessage(s.ctx, req.Type, req.ID)
 }
+
+func (s *UserService) QueryAdminList() ([]*db.User, error) {
+	return db.GetAdminList(s.ctx)
+}

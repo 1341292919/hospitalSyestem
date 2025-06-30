@@ -339,3 +339,27 @@ func GetUserMessage(ctx context.Context, t, id int64) (*User, error) {
 	}
 	return nil, errno.NewErrNo(errno.InternalServiceErrorCode, "invalid type")
 }
+
+func GetAdminList(ctx context.Context) ([]*User, error) {
+	var admins []*Admin
+	err := DB.WithContext(ctx).
+		Table(constants.TableAdmin).
+		Find(&admins).
+		Error
+	if err != nil {
+		return nil, errno.NewErrNo(errno.InternalDatabaseErrorCode, "get admin list error"+err.Error())
+	}
+
+	result := make([]*User, 0, len(admins))
+	for _, admin := range admins {
+		result = append(result, &User{
+			Id:           admin.AdminId,
+			Name:         admin.Username,
+			CreateTime:   admin.CreateTime,
+			ContactPhone: admin.ContactPhone,
+		})
+
+	}
+
+	return result, nil
+}

@@ -49,3 +49,13 @@ func _nurseMw() []app.HandlerFunc {
 func _updatenurseMw() []app.HandlerFunc {
 	return auth.Auth(0)
 }
+
+func _adminMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _queryadminlistMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
