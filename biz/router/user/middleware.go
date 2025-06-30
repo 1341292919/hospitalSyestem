@@ -55,7 +55,7 @@ func _adminMw() []app.HandlerFunc {
 	return nil
 }
 
-func _queryadminlistMw() []app.HandlerFunc {
+func _queryuserlistMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return auth.Auth(0)
 }

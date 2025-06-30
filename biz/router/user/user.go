@@ -24,7 +24,7 @@ func Register(r *server.Hertz) {
 		_user.POST("/login", append(_loginMw(), user.Login)...)
 		{
 			_admin := _user.Group("/admin", _adminMw()...)
-			_admin.GET("/list", append(_queryadminlistMw(), user.QueryAdminList)...)
+			_admin.GET("/list", append(_queryuserlistMw(), user.QueryUserList)...)
 		}
 		{
 			_doctor := _user.Group("/doctor", _doctorMw()...)

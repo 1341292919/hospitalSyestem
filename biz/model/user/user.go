@@ -2466,21 +2466,29 @@ func (p *QueryUserResponse) String() string {
 
 }
 
-type QueryAdminListRequest struct {
+type QueryUserListRequest struct {
+	Type int64 `thrift:"type,1,required" form:"type,required" json:"type,required" query:"type,required"`
 }
 
-func NewQueryAdminListRequest() *QueryAdminListRequest {
-	return &QueryAdminListRequest{}
+func NewQueryUserListRequest() *QueryUserListRequest {
+	return &QueryUserListRequest{}
 }
 
-func (p *QueryAdminListRequest) InitDefault() {
+func (p *QueryUserListRequest) InitDefault() {
 }
 
-var fieldIDToName_QueryAdminListRequest = map[int16]string{}
+func (p *QueryUserListRequest) GetType() (v int64) {
+	return p.Type
+}
 
-func (p *QueryAdminListRequest) Read(iprot thrift.TProtocol) (err error) {
+var fieldIDToName_QueryUserListRequest = map[int16]string{
+	1: "type",
+}
+
+func (p *QueryUserListRequest) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
+	var issetType bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -2494,8 +2502,21 @@ func (p *QueryAdminListRequest) Read(iprot thrift.TProtocol) (err error) {
 		if fieldTypeId == thrift.STOP {
 			break
 		}
-		if err = iprot.Skip(fieldTypeId); err != nil {
-			goto SkipFieldTypeError
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetType = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		}
 		if err = iprot.ReadFieldEnd(); err != nil {
 			goto ReadFieldEndError
@@ -2505,25 +2526,50 @@ func (p *QueryAdminListRequest) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
+	if !issetType {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-SkipFieldTypeError:
-	return thrift.PrependError(fmt.Sprintf("%T skip field type %d error", p, fieldTypeId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_QueryUserListRequest[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_QueryUserListRequest[fieldId]))
 }
 
-func (p *QueryAdminListRequest) Write(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteStructBegin("QueryAdminListRequest"); err != nil {
+func (p *QueryUserListRequest) ReadField1(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Type = _field
+	return nil
+}
+
+func (p *QueryUserListRequest) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("QueryUserListRequest"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
 		goto WriteFieldStopError
@@ -2534,55 +2580,74 @@ func (p *QueryAdminListRequest) Write(oprot thrift.TProtocol) (err error) {
 	return nil
 WriteStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
 	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *QueryAdminListRequest) String() string {
+func (p *QueryUserListRequest) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("type", thrift.I64, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Type); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *QueryUserListRequest) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("QueryAdminListRequest(%+v)", *p)
+	return fmt.Sprintf("QueryUserListRequest(%+v)", *p)
 
 }
 
-type QueryAdminListResponse struct {
+type QueryUserListResponse struct {
 	Base *model.BaseResp `thrift:"base,1" form:"base" json:"base" query:"base"`
 	Data []*model.User   `thrift:"data,2" form:"data" json:"data" query:"data"`
 }
 
-func NewQueryAdminListResponse() *QueryAdminListResponse {
-	return &QueryAdminListResponse{}
+func NewQueryUserListResponse() *QueryUserListResponse {
+	return &QueryUserListResponse{}
 }
 
-func (p *QueryAdminListResponse) InitDefault() {
+func (p *QueryUserListResponse) InitDefault() {
 }
 
-var QueryAdminListResponse_Base_DEFAULT *model.BaseResp
+var QueryUserListResponse_Base_DEFAULT *model.BaseResp
 
-func (p *QueryAdminListResponse) GetBase() (v *model.BaseResp) {
+func (p *QueryUserListResponse) GetBase() (v *model.BaseResp) {
 	if !p.IsSetBase() {
-		return QueryAdminListResponse_Base_DEFAULT
+		return QueryUserListResponse_Base_DEFAULT
 	}
 	return p.Base
 }
 
-func (p *QueryAdminListResponse) GetData() (v []*model.User) {
+func (p *QueryUserListResponse) GetData() (v []*model.User) {
 	return p.Data
 }
 
-var fieldIDToName_QueryAdminListResponse = map[int16]string{
+var fieldIDToName_QueryUserListResponse = map[int16]string{
 	1: "base",
 	2: "data",
 }
 
-func (p *QueryAdminListResponse) IsSetBase() bool {
+func (p *QueryUserListResponse) IsSetBase() bool {
 	return p.Base != nil
 }
 
-func (p *QueryAdminListResponse) Read(iprot thrift.TProtocol) (err error) {
+func (p *QueryUserListResponse) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 
@@ -2635,7 +2700,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_QueryAdminListResponse[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_QueryUserListResponse[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -2645,7 +2710,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *QueryAdminListResponse) ReadField1(iprot thrift.TProtocol) error {
+func (p *QueryUserListResponse) ReadField1(iprot thrift.TProtocol) error {
 	_field := model.NewBaseResp()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -2653,7 +2718,7 @@ func (p *QueryAdminListResponse) ReadField1(iprot thrift.TProtocol) error {
 	p.Base = _field
 	return nil
 }
-func (p *QueryAdminListResponse) ReadField2(iprot thrift.TProtocol) error {
+func (p *QueryUserListResponse) ReadField2(iprot thrift.TProtocol) error {
 	_, size, err := iprot.ReadListBegin()
 	if err != nil {
 		return err
@@ -2677,9 +2742,9 @@ func (p *QueryAdminListResponse) ReadField2(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *QueryAdminListResponse) Write(oprot thrift.TProtocol) (err error) {
+func (p *QueryUserListResponse) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("QueryAdminListResponse"); err != nil {
+	if err = oprot.WriteStructBegin("QueryUserListResponse"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -2709,7 +2774,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *QueryAdminListResponse) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *QueryUserListResponse) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("base", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -2725,7 +2790,7 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
-func (p *QueryAdminListResponse) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *QueryUserListResponse) writeField2(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("data", thrift.LIST, 2); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -2750,11 +2815,11 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
-func (p *QueryAdminListResponse) String() string {
+func (p *QueryUserListResponse) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("QueryAdminListResponse(%+v)", *p)
+	return fmt.Sprintf("QueryUserListResponse(%+v)", *p)
 
 }
 
@@ -2769,7 +2834,7 @@ type UserService interface {
 
 	Query(ctx context.Context, req *QueryUserRequest) (r *QueryUserResponse, err error)
 
-	QueryAdminList(ctx context.Context, req *QueryAdminListRequest) (r *QueryAdminListResponse, err error)
+	QueryUserList(ctx context.Context, req *QueryUserListRequest) (r *QueryUserListResponse, err error)
 }
 
 type UserServiceClient struct {
@@ -2843,11 +2908,11 @@ func (p *UserServiceClient) Query(ctx context.Context, req *QueryUserRequest) (r
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *UserServiceClient) QueryAdminList(ctx context.Context, req *QueryAdminListRequest) (r *QueryAdminListResponse, err error) {
-	var _args UserServiceQueryAdminListArgs
+func (p *UserServiceClient) QueryUserList(ctx context.Context, req *QueryUserListRequest) (r *QueryUserListResponse, err error) {
+	var _args UserServiceQueryUserListArgs
 	_args.Req = req
-	var _result UserServiceQueryAdminListResult
-	if err = p.Client_().Call(ctx, "QueryAdminList", &_args, &_result); err != nil {
+	var _result UserServiceQueryUserListResult
+	if err = p.Client_().Call(ctx, "QueryUserList", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -2878,7 +2943,7 @@ func NewUserServiceProcessor(handler UserService) *UserServiceProcessor {
 	self.AddToProcessorMap("UpdateDoctor", &userServiceProcessorUpdateDoctor{handler: handler})
 	self.AddToProcessorMap("UpdateNurse", &userServiceProcessorUpdateNurse{handler: handler})
 	self.AddToProcessorMap("Query", &userServiceProcessorQuery{handler: handler})
-	self.AddToProcessorMap("QueryAdminList", &userServiceProcessorQueryAdminList{handler: handler})
+	self.AddToProcessorMap("QueryUserList", &userServiceProcessorQueryUserList{handler: handler})
 	return self
 }
 func (p *UserServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -3139,16 +3204,16 @@ func (p *userServiceProcessorQuery) Process(ctx context.Context, seqId int32, ip
 	return true, err
 }
 
-type userServiceProcessorQueryAdminList struct {
+type userServiceProcessorQueryUserList struct {
 	handler UserService
 }
 
-func (p *userServiceProcessorQueryAdminList) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := UserServiceQueryAdminListArgs{}
+func (p *userServiceProcessorQueryUserList) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := UserServiceQueryUserListArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("QueryAdminList", thrift.EXCEPTION, seqId)
+		oprot.WriteMessageBegin("QueryUserList", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -3157,11 +3222,11 @@ func (p *userServiceProcessorQueryAdminList) Process(ctx context.Context, seqId 
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := UserServiceQueryAdminListResult{}
-	var retval *QueryAdminListResponse
-	if retval, err2 = p.handler.QueryAdminList(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing QueryAdminList: "+err2.Error())
-		oprot.WriteMessageBegin("QueryAdminList", thrift.EXCEPTION, seqId)
+	result := UserServiceQueryUserListResult{}
+	var retval *QueryUserListResponse
+	if retval, err2 = p.handler.QueryUserList(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing QueryUserList: "+err2.Error())
+		oprot.WriteMessageBegin("QueryUserList", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -3169,7 +3234,7 @@ func (p *userServiceProcessorQueryAdminList) Process(ctx context.Context, seqId 
 	} else {
 		result.Success = retval
 	}
-	if err2 = oprot.WriteMessageBegin("QueryAdminList", thrift.REPLY, seqId); err2 != nil {
+	if err2 = oprot.WriteMessageBegin("QueryUserList", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -4647,35 +4712,35 @@ func (p *UserServiceQueryResult) String() string {
 
 }
 
-type UserServiceQueryAdminListArgs struct {
-	Req *QueryAdminListRequest `thrift:"req,1"`
+type UserServiceQueryUserListArgs struct {
+	Req *QueryUserListRequest `thrift:"req,1"`
 }
 
-func NewUserServiceQueryAdminListArgs() *UserServiceQueryAdminListArgs {
-	return &UserServiceQueryAdminListArgs{}
+func NewUserServiceQueryUserListArgs() *UserServiceQueryUserListArgs {
+	return &UserServiceQueryUserListArgs{}
 }
 
-func (p *UserServiceQueryAdminListArgs) InitDefault() {
+func (p *UserServiceQueryUserListArgs) InitDefault() {
 }
 
-var UserServiceQueryAdminListArgs_Req_DEFAULT *QueryAdminListRequest
+var UserServiceQueryUserListArgs_Req_DEFAULT *QueryUserListRequest
 
-func (p *UserServiceQueryAdminListArgs) GetReq() (v *QueryAdminListRequest) {
+func (p *UserServiceQueryUserListArgs) GetReq() (v *QueryUserListRequest) {
 	if !p.IsSetReq() {
-		return UserServiceQueryAdminListArgs_Req_DEFAULT
+		return UserServiceQueryUserListArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-var fieldIDToName_UserServiceQueryAdminListArgs = map[int16]string{
+var fieldIDToName_UserServiceQueryUserListArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *UserServiceQueryAdminListArgs) IsSetReq() bool {
+func (p *UserServiceQueryUserListArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *UserServiceQueryAdminListArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *UserServiceQueryUserListArgs) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 
@@ -4720,7 +4785,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceQueryAdminListArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceQueryUserListArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4730,8 +4795,8 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *UserServiceQueryAdminListArgs) ReadField1(iprot thrift.TProtocol) error {
-	_field := NewQueryAdminListRequest()
+func (p *UserServiceQueryUserListArgs) ReadField1(iprot thrift.TProtocol) error {
+	_field := NewQueryUserListRequest()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -4739,9 +4804,9 @@ func (p *UserServiceQueryAdminListArgs) ReadField1(iprot thrift.TProtocol) error
 	return nil
 }
 
-func (p *UserServiceQueryAdminListArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *UserServiceQueryUserListArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("QueryAdminList_args"); err != nil {
+	if err = oprot.WriteStructBegin("QueryUserList_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -4767,7 +4832,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *UserServiceQueryAdminListArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *UserServiceQueryUserListArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -4784,43 +4849,43 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *UserServiceQueryAdminListArgs) String() string {
+func (p *UserServiceQueryUserListArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("UserServiceQueryAdminListArgs(%+v)", *p)
+	return fmt.Sprintf("UserServiceQueryUserListArgs(%+v)", *p)
 
 }
 
-type UserServiceQueryAdminListResult struct {
-	Success *QueryAdminListResponse `thrift:"success,0,optional"`
+type UserServiceQueryUserListResult struct {
+	Success *QueryUserListResponse `thrift:"success,0,optional"`
 }
 
-func NewUserServiceQueryAdminListResult() *UserServiceQueryAdminListResult {
-	return &UserServiceQueryAdminListResult{}
+func NewUserServiceQueryUserListResult() *UserServiceQueryUserListResult {
+	return &UserServiceQueryUserListResult{}
 }
 
-func (p *UserServiceQueryAdminListResult) InitDefault() {
+func (p *UserServiceQueryUserListResult) InitDefault() {
 }
 
-var UserServiceQueryAdminListResult_Success_DEFAULT *QueryAdminListResponse
+var UserServiceQueryUserListResult_Success_DEFAULT *QueryUserListResponse
 
-func (p *UserServiceQueryAdminListResult) GetSuccess() (v *QueryAdminListResponse) {
+func (p *UserServiceQueryUserListResult) GetSuccess() (v *QueryUserListResponse) {
 	if !p.IsSetSuccess() {
-		return UserServiceQueryAdminListResult_Success_DEFAULT
+		return UserServiceQueryUserListResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-var fieldIDToName_UserServiceQueryAdminListResult = map[int16]string{
+var fieldIDToName_UserServiceQueryUserListResult = map[int16]string{
 	0: "success",
 }
 
-func (p *UserServiceQueryAdminListResult) IsSetSuccess() bool {
+func (p *UserServiceQueryUserListResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *UserServiceQueryAdminListResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *UserServiceQueryUserListResult) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 
@@ -4865,7 +4930,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceQueryAdminListResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceQueryUserListResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4875,8 +4940,8 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *UserServiceQueryAdminListResult) ReadField0(iprot thrift.TProtocol) error {
-	_field := NewQueryAdminListResponse()
+func (p *UserServiceQueryUserListResult) ReadField0(iprot thrift.TProtocol) error {
+	_field := NewQueryUserListResponse()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -4884,9 +4949,9 @@ func (p *UserServiceQueryAdminListResult) ReadField0(iprot thrift.TProtocol) err
 	return nil
 }
 
-func (p *UserServiceQueryAdminListResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *UserServiceQueryUserListResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("QueryAdminList_result"); err != nil {
+	if err = oprot.WriteStructBegin("QueryUserList_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -4912,7 +4977,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *UserServiceQueryAdminListResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *UserServiceQueryUserListResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -4931,10 +4996,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *UserServiceQueryAdminListResult) String() string {
+func (p *UserServiceQueryUserListResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("UserServiceQueryAdminListResult(%+v)", *p)
+	return fmt.Sprintf("UserServiceQueryUserListResult(%+v)", *p)
 
 }

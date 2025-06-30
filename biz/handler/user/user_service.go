@@ -129,26 +129,26 @@ func Query(ctx context.Context, c *app.RequestContext) {
 	pack.SendResponse(c, resp)
 }
 
-// QueryAdminList .
+// QueryUserList .
 // @router /user/admin/list [GET]
-func QueryAdminList(ctx context.Context, c *app.RequestContext) {
+func QueryUserList(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.QueryAdminListRequest
+	var req user.QueryUserListRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		pack.SendFailResponse(c, errno.NewErrNo(errno.ParamMissingErrorCode, "param missing:"+err.Error()))
 		return
 	}
 
-	resp := new(user.QueryAdminListResponse)
+	resp := new(user.QueryUserListResponse)
 
-	AdminResp, err := service.NewUserService(ctx, c).QueryAdminList()
+	userListResp, err := service.NewUserService(ctx, c).QueryUserList(&req)
 	if err != nil {
 		pack.SendFailResponse(c, errno.ConvertErr(err))
 		return
 	}
 
 	resp.Base = pack.BuildBaseResp(errno.Success)
-	resp.Data = pack.UserList(AdminResp)
+	resp.Data = pack.UserList(userListResp)
 	pack.SendResponse(c, resp)
 }

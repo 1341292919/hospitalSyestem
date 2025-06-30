@@ -59,11 +59,11 @@ struct QueryUserResponse{
      2: model.User data,
 }
 
-struct QueryAdminListRequest{
-
+struct QueryUserListRequest{
+    1: required i64 type,
 }
 
-struct QueryAdminListResponse{
+struct QueryUserListResponse{
     1: model.BaseResp base,
     2: list<model.User> data,
 }
@@ -74,5 +74,5 @@ service UserService {
     UpdateDoctorMessageResponse  UpdateDoctor(1:UpdateDoctorMessageRequest req)(api.put="/user/doctor/update"),
     UpdateNurseMessageResponse  UpdateNurse(1:UpdateNurseMessageRequest req)(api.put="/user/nurse/update"),
     QueryUserResponse Query(1:QueryUserRequest req)(api.get="/user/info"),
-    QueryAdminListResponse QueryAdminList(1:QueryAdminListRequest req)(api.get="/user/admin/list"),
+    QueryUserListResponse QueryUserList(1:QueryUserListRequest req)(api.get="/user/admin/list"),
 }
