@@ -19,20 +19,14 @@ struct AddDiagnoseRequest{
     4:required string notes,
     5:required string   disease_name
     6:required i64 diagnosis_id,
+    7:required string  description,
+    8:required i64 start_time,
+    9:required string  signs_description,
 }
 struct AddDiagnoseResponse{
      1: model.BaseResp base,
 }
-struct AddSymptomRequest{
-    1:required i64 diagnosis_id,
-    2:required i64 symptom_id,
-    3:required string  description,
-    4:required i64 start_time,
-    5:required string  signs_description,
-}
-struct AddSymptomResponse{
-     1: model.BaseResp base,
-}
+
 struct QueryCaseRequest{
     1:required i64  patient_id,
 }
@@ -44,7 +38,6 @@ struct QueryCaseResponse{
 service ClinicalService {
     AddPatientResponse AddPatient(1:AddPatientRequest req)(api.post="/clinical/patient/add"),
     AddDiagnoseResponse AddDiagnose(1:AddDiagnoseRequest req)(api.post="/clinical/diagnose/add"),
-    AddSymptomResponse AddSymptom(1:AddSymptomRequest req)(api.post="/clinical/symptom/add"),
     QueryCaseResponse QueryCase(1:QueryCaseRequest req)(api.get="/clinical/case/info"),
 }
 

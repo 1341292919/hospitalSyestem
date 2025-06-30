@@ -21,6 +21,11 @@ CREATE TABLE diagnoses (
                            disease_name VARCHAR(100) NOT NULL COMMENT '疾病名称',
                            diagnosis_time DATETIME NOT NULL COMMENT '诊断时间',
                            notes TEXT COMMENT '备注信息',
+
+                           description TEXT NOT NULL COMMENT '症状描述',
+                           start_time DATETIME COMMENT '开始时间',
+                           signs_description TEXT COMMENT '体征描述',
+    
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 
                            FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
@@ -37,9 +42,7 @@ CREATE TABLE diagnoses (
 CREATE TABLE symptoms (
                           symptom_id INT PRIMARY KEY AUTO_INCREMENT COMMENT '症状ID',
                           diagnosis_id INT NOT NULL COMMENT '关联诊断ID',
-                          description TEXT NOT NULL COMMENT '症状描述',
-                          start_time DATETIME COMMENT '开始时间',
-                          signs_description TEXT COMMENT '体征描述',
+
                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 
                           FOREIGN KEY (diagnosis_id) REFERENCES diagnoses(diagnosis_id)

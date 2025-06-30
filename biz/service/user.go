@@ -45,6 +45,15 @@ func (s *UserService) UpdateNurse(req *user.UpdateNurseMessageRequest) error {
 	}
 	return db.UpdateNurseMessage(s.ctx, r)
 }
+func (s *UserService) UpdateAdmin(req *user.UpdateAdminRequest) error {
+	var r *db.UpdateAdminRequest
+	r = &db.UpdateAdminRequest{
+		Name:         req.Username,
+		ContactPhone: req.ContactPhone,
+		Id:           req.AdminID,
+	}
+	return db.UpdateAdmin(s.ctx, r)
+}
 
 func (s *UserService) UpdateDoctor(req *user.UpdateDoctorMessageRequest) error {
 	var r *db.UpdateDoctorRequest

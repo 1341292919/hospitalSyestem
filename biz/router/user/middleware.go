@@ -59,3 +59,13 @@ func _infoMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _adminMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _updateadminMw() []app.HandlerFunc {
+	// your code...
+	return auth.Auth(2)
+}

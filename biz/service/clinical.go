@@ -35,17 +35,13 @@ func (s *ClinicalService) CreateDiagnose(req *clinical.AddDiagnoseRequest) error
 		DiagnosisTime: time.Unix(req.DiagnosisTime, 0),
 		CreatedAT:     time.Now(),
 		Notes:         req.Notes,
-	})
-}
-func (s *ClinicalService) CreateSymptom(req *clinical.AddSymptomRequest) error {
-	return db.CreateSymptom(s.ctx, &db.Symptom{
-		DiagnosisId:      req.DiagnosisID,
+
 		Description:      req.Description,
 		StartTime:        time.Unix(req.StartTime, 0),
 		SignsDescription: req.SignsDescription,
-		SymptomId:        req.SymptomID,
 	})
 }
+
 func (s *ClinicalService) QueryMedicalCase(req *clinical.QueryCaseRequest) (*db.Case, error) {
 	return db.QueryMedicalCase(s.ctx, req.PatientID)
 }

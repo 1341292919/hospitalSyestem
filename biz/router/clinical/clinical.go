@@ -31,9 +31,5 @@ func Register(r *server.Hertz) {
 			_patient := _clinical.Group("/patient", _patientMw()...)
 			_patient.POST("/add", append(_addpatientMw(), clinical.AddPatient)...)
 		}
-		{
-			_symptom := _clinical.Group("/symptom", _symptomMw()...)
-			_symptom.POST("/add", append(_addsymptomMw(), clinical.AddSymptom)...)
-		}
 	}
 }

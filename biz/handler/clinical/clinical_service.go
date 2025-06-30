@@ -56,27 +56,6 @@ func AddDiagnose(ctx context.Context, c *app.RequestContext) {
 	pack.SendResponse(c, resp)
 }
 
-// AddSymptom .
-// @router /clinical/symptom/add [POST]
-func AddSymptom(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req clinical.AddSymptomRequest
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		pack.SendFailResponse(c, errno.NewErrNo(errno.ParamMissingErrorCode, "param missing:"+err.Error()))
-		return
-	}
-	resp := new(clinical.AddSymptomResponse)
-	err = service.NewClinicalService(ctx, c).CreateSymptom(&req)
-	if err != nil {
-		pack.SendFailResponse(c, errno.ConvertErr(err))
-		return
-	}
-
-	resp.Base = pack.BuildBaseResp(errno.Success)
-	pack.SendResponse(c, resp)
-}
-
 // QueryCase .
 // @router /clinical/case/info [GET]
 func QueryCase(ctx context.Context, c *app.RequestContext) {

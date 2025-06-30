@@ -416,3 +416,29 @@ func GetNurseList(ctx context.Context) ([]*User, error) {
 
 	return result, nil
 }
+
+func UpdateAdmin(ctx context.Context, req *UpdateAdminRequest) error {
+	var admin *Admin
+	err := DB.WithContext(ctx).
+		Table(constants.TableAdmin).
+		Where("BINARY admin_id = ?", req.Id).
+		First(&admin).
+		Error
+	if err != nil { //找不到了
+		return errno.NewErrNo(errno.InternalServiceErrorCode, "admin no exists")
+	}
+	// 使用Select明确指定要更新的字段
+	err = DB.WithContext(ctx).
+		Table(constants.TableAdmin).
+		Model(&Admin{}).
+		Where("BINARY admin_id = ?", req.Id).
+		Select("ContactPhone", "username"). // 明确选择字段
+		Updates(Admin{
+			ContactPhone: req.ContactPhone,
+			Username:     req.Name,
+		}).Error
+	if err != nil {
+		return errno.NewErrNo(errno.InternalDatabaseErrorCode, "update admin error")
+	}
+	return nil
+}
