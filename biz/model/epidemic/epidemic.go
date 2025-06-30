@@ -14,7 +14,7 @@ type AddEpidemicCaseRequest struct {
 	CaseID int64 `thrift:"case_id,1,required" form:"case_id,required" json:"case_id,required" query:"case_id,required"`
 	// 患者ID
 	PatientID int64 `thrift:"patient_id,2,required" form:"patient_id,required" json:"patient_id,required" query:"patient_id,required"`
-	// 发病日期（格式：YYYY-MM-DD）
+	// 病发日期（格式：YYYY-MM-DD）
 	OnsetDate int64 `thrift:"onset_date,3,required" form:"onset_date,required" json:"onset_date,required" query:"onset_date,required"`
 	// 诊断日期（格式：YYYY-MM-DD）
 	DiagnosisDate int64 `thrift:"diagnosis_date,4,required" form:"diagnosis_date,required" json:"diagnosis_date,required" query:"diagnosis_date,required"`

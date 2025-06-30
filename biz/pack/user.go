@@ -19,10 +19,13 @@ func User(data *db.User) *model.User {
 	}
 }
 
-func UserList(data []*db.User) []*model.User {
+func UserList(data []*db.User) *model.UserList {
 	var users []*model.User
 	for _, v := range data {
 		users = append(users, User(v))
 	}
-	return users
+	return &model.UserList{
+		Items: users,
+		Total: int64(len(data)),
+	}
 }

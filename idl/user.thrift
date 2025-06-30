@@ -65,7 +65,7 @@ struct QueryUserListRequest{
 
 struct QueryUserListResponse{
     1: model.BaseResp base,
-    2: list<model.User> data,
+    2: model.UserList data,
 }
 
 service UserService {
@@ -74,5 +74,5 @@ service UserService {
     UpdateDoctorMessageResponse  UpdateDoctor(1:UpdateDoctorMessageRequest req)(api.put="/user/doctor/update"),
     UpdateNurseMessageResponse  UpdateNurse(1:UpdateNurseMessageRequest req)(api.put="/user/nurse/update"),
     QueryUserResponse Query(1:QueryUserRequest req)(api.get="/user/info"),
-    QueryUserListResponse QueryUserList(1:QueryUserListRequest req)(api.get="/user/admin/list"),
+    QueryUserListResponse QueryUserList(1:QueryUserListRequest req)(api.get="/user/info/list"),
 }

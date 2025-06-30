@@ -50,12 +50,12 @@ func _updatenurseMw() []app.HandlerFunc {
 	return auth.Auth(0)
 }
 
-func _adminMw() []app.HandlerFunc {
-	// your code...
-	return nil
-}
-
 func _queryuserlistMw() []app.HandlerFunc {
 	// your code...
 	return auth.Auth(0)
+}
+
+func _infoMw() []app.HandlerFunc {
+	// your code...
+	return nil
 }

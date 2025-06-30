@@ -11,6 +11,10 @@ struct User{
     8: required string title
     9: required string identity
 }
+struct UserList{
+        1: required list <User> items,
+        2: required i64 total,                      // 总数量
+}
 
 struct BaseResp {
     1: required i64 code,          //请求返回的状态码
