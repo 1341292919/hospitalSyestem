@@ -20,15 +20,10 @@ type Diagnose struct {
 	DiagnosisTime time.Time
 	Notes         string
 	CreatedAT     time.Time
-}
 
-type Symptom struct {
-	SymptomId        int64
-	DiagnosisId      int64
 	Description      string
 	StartTime        time.Time
 	SignsDescription string
-	CreatedAt        time.Time
 }
 
 type Case struct {

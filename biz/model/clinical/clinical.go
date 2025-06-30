@@ -510,12 +510,15 @@ func (p *AddPatientResponse) String() string {
 }
 
 type AddDiagnoseRequest struct {
-	PatientID     int64  `thrift:"patient_id,1,required" form:"patient_id,required" json:"patient_id,required" query:"patient_id,required"`
-	DoctorID      int64  `thrift:"doctor_id,2,required" form:"doctor_id,required" json:"doctor_id,required" query:"doctor_id,required"`
-	DiagnosisTime int64  `thrift:"diagnosis_time,3,required" form:"diagnosis_time,required" json:"diagnosis_time,required" query:"diagnosis_time,required"`
-	Notes         string `thrift:"notes,4,required" form:"notes,required" json:"notes,required" query:"notes,required"`
-	DiseaseName   string `thrift:"disease_name,5,required" form:"disease_name,required" json:"disease_name,required" query:"disease_name,required"`
-	DiagnosisID   int64  `thrift:"diagnosis_id,6,required" form:"diagnosis_id,required" json:"diagnosis_id,required" query:"diagnosis_id,required"`
+	PatientID        int64  `thrift:"patient_id,1,required" form:"patient_id,required" json:"patient_id,required" query:"patient_id,required"`
+	DoctorID         int64  `thrift:"doctor_id,2,required" form:"doctor_id,required" json:"doctor_id,required" query:"doctor_id,required"`
+	DiagnosisTime    int64  `thrift:"diagnosis_time,3,required" form:"diagnosis_time,required" json:"diagnosis_time,required" query:"diagnosis_time,required"`
+	Notes            string `thrift:"notes,4,required" form:"notes,required" json:"notes,required" query:"notes,required"`
+	DiseaseName      string `thrift:"disease_name,5,required" form:"disease_name,required" json:"disease_name,required" query:"disease_name,required"`
+	DiagnosisID      int64  `thrift:"diagnosis_id,6,required" form:"diagnosis_id,required" json:"diagnosis_id,required" query:"diagnosis_id,required"`
+	Description      string `thrift:"description,7,required" form:"description,required" json:"description,required" query:"description,required"`
+	StartTime        int64  `thrift:"start_time,8,required" form:"start_time,required" json:"start_time,required" query:"start_time,required"`
+	SignsDescription string `thrift:"signs_description,9,required" form:"signs_description,required" json:"signs_description,required" query:"signs_description,required"`
 }
 
 func NewAddDiagnoseRequest() *AddDiagnoseRequest {
@@ -549,6 +552,18 @@ func (p *AddDiagnoseRequest) GetDiagnosisID() (v int64) {
 	return p.DiagnosisID
 }
 
+func (p *AddDiagnoseRequest) GetDescription() (v string) {
+	return p.Description
+}
+
+func (p *AddDiagnoseRequest) GetStartTime() (v int64) {
+	return p.StartTime
+}
+
+func (p *AddDiagnoseRequest) GetSignsDescription() (v string) {
+	return p.SignsDescription
+}
+
 var fieldIDToName_AddDiagnoseRequest = map[int16]string{
 	1: "patient_id",
 	2: "doctor_id",
@@ -556,6 +571,9 @@ var fieldIDToName_AddDiagnoseRequest = map[int16]string{
 	4: "notes",
 	5: "disease_name",
 	6: "diagnosis_id",
+	7: "description",
+	8: "start_time",
+	9: "signs_description",
 }
 
 func (p *AddDiagnoseRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -567,6 +585,9 @@ func (p *AddDiagnoseRequest) Read(iprot thrift.TProtocol) (err error) {
 	var issetNotes bool = false
 	var issetDiseaseName bool = false
 	var issetDiagnosisID bool = false
+	var issetDescription bool = false
+	var issetStartTime bool = false
+	var issetSignsDescription bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -636,6 +657,33 @@ func (p *AddDiagnoseRequest) Read(iprot thrift.TProtocol) (err error) {
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
+		case 7:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetDescription = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 8:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetStartTime = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 9:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField9(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetSignsDescription = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -676,6 +724,21 @@ func (p *AddDiagnoseRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	if !issetDiagnosisID {
 		fieldId = 6
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetDescription {
+		fieldId = 7
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetStartTime {
+		fieldId = 8
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetSignsDescription {
+		fieldId = 9
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -762,6 +825,39 @@ func (p *AddDiagnoseRequest) ReadField6(iprot thrift.TProtocol) error {
 	p.DiagnosisID = _field
 	return nil
 }
+func (p *AddDiagnoseRequest) ReadField7(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Description = _field
+	return nil
+}
+func (p *AddDiagnoseRequest) ReadField8(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.StartTime = _field
+	return nil
+}
+func (p *AddDiagnoseRequest) ReadField9(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.SignsDescription = _field
+	return nil
+}
 
 func (p *AddDiagnoseRequest) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -791,6 +887,18 @@ func (p *AddDiagnoseRequest) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField6(oprot); err != nil {
 			fieldId = 6
+			goto WriteFieldError
+		}
+		if err = p.writeField7(oprot); err != nil {
+			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
+			goto WriteFieldError
+		}
+		if err = p.writeField9(oprot); err != nil {
+			fieldId = 9
 			goto WriteFieldError
 		}
 	}
@@ -906,6 +1014,54 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+}
+func (p *AddDiagnoseRequest) writeField7(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("description", thrift.STRING, 7); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Description); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+func (p *AddDiagnoseRequest) writeField8(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("start_time", thrift.I64, 8); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.StartTime); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+func (p *AddDiagnoseRequest) writeField9(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("signs_description", thrift.STRING, 9); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.SignsDescription); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
 }
 
 func (p *AddDiagnoseRequest) String() string {
@@ -1058,506 +1214,6 @@ func (p *AddDiagnoseResponse) String() string {
 		return "<nil>"
 	}
 	return fmt.Sprintf("AddDiagnoseResponse(%+v)", *p)
-
-}
-
-type AddSymptomRequest struct {
-	DiagnosisID      int64  `thrift:"diagnosis_id,1,required" form:"diagnosis_id,required" json:"diagnosis_id,required" query:"diagnosis_id,required"`
-	SymptomID        int64  `thrift:"symptom_id,2,required" form:"symptom_id,required" json:"symptom_id,required" query:"symptom_id,required"`
-	Description      string `thrift:"description,3,required" form:"description,required" json:"description,required" query:"description,required"`
-	StartTime        int64  `thrift:"start_time,4,required" form:"start_time,required" json:"start_time,required" query:"start_time,required"`
-	SignsDescription string `thrift:"signs_description,5,required" form:"signs_description,required" json:"signs_description,required" query:"signs_description,required"`
-}
-
-func NewAddSymptomRequest() *AddSymptomRequest {
-	return &AddSymptomRequest{}
-}
-
-func (p *AddSymptomRequest) InitDefault() {
-}
-
-func (p *AddSymptomRequest) GetDiagnosisID() (v int64) {
-	return p.DiagnosisID
-}
-
-func (p *AddSymptomRequest) GetSymptomID() (v int64) {
-	return p.SymptomID
-}
-
-func (p *AddSymptomRequest) GetDescription() (v string) {
-	return p.Description
-}
-
-func (p *AddSymptomRequest) GetStartTime() (v int64) {
-	return p.StartTime
-}
-
-func (p *AddSymptomRequest) GetSignsDescription() (v string) {
-	return p.SignsDescription
-}
-
-var fieldIDToName_AddSymptomRequest = map[int16]string{
-	1: "diagnosis_id",
-	2: "symptom_id",
-	3: "description",
-	4: "start_time",
-	5: "signs_description",
-}
-
-func (p *AddSymptomRequest) Read(iprot thrift.TProtocol) (err error) {
-	var fieldTypeId thrift.TType
-	var fieldId int16
-	var issetDiagnosisID bool = false
-	var issetSymptomID bool = false
-	var issetDescription bool = false
-	var issetStartTime bool = false
-	var issetSignsDescription bool = false
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 1:
-			if fieldTypeId == thrift.I64 {
-				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-				issetDiagnosisID = true
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 2:
-			if fieldTypeId == thrift.I64 {
-				if err = p.ReadField2(iprot); err != nil {
-					goto ReadFieldError
-				}
-				issetSymptomID = true
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 3:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField3(iprot); err != nil {
-					goto ReadFieldError
-				}
-				issetDescription = true
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 4:
-			if fieldTypeId == thrift.I64 {
-				if err = p.ReadField4(iprot); err != nil {
-					goto ReadFieldError
-				}
-				issetStartTime = true
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 5:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField5(iprot); err != nil {
-					goto ReadFieldError
-				}
-				issetSignsDescription = true
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	if !issetDiagnosisID {
-		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetSymptomID {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetDescription {
-		fieldId = 3
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetStartTime {
-		fieldId = 4
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetSignsDescription {
-		fieldId = 5
-		goto RequiredFieldNotSetError
-	}
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_AddSymptomRequest[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_AddSymptomRequest[fieldId]))
-}
-
-func (p *AddSymptomRequest) ReadField1(iprot thrift.TProtocol) error {
-
-	var _field int64
-	if v, err := iprot.ReadI64(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.DiagnosisID = _field
-	return nil
-}
-func (p *AddSymptomRequest) ReadField2(iprot thrift.TProtocol) error {
-
-	var _field int64
-	if v, err := iprot.ReadI64(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.SymptomID = _field
-	return nil
-}
-func (p *AddSymptomRequest) ReadField3(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.Description = _field
-	return nil
-}
-func (p *AddSymptomRequest) ReadField4(iprot thrift.TProtocol) error {
-
-	var _field int64
-	if v, err := iprot.ReadI64(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.StartTime = _field
-	return nil
-}
-func (p *AddSymptomRequest) ReadField5(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.SignsDescription = _field
-	return nil
-}
-
-func (p *AddSymptomRequest) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("AddSymptomRequest"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField1(oprot); err != nil {
-			fieldId = 1
-			goto WriteFieldError
-		}
-		if err = p.writeField2(oprot); err != nil {
-			fieldId = 2
-			goto WriteFieldError
-		}
-		if err = p.writeField3(oprot); err != nil {
-			fieldId = 3
-			goto WriteFieldError
-		}
-		if err = p.writeField4(oprot); err != nil {
-			fieldId = 4
-			goto WriteFieldError
-		}
-		if err = p.writeField5(oprot); err != nil {
-			fieldId = 5
-			goto WriteFieldError
-		}
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *AddSymptomRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("diagnosis_id", thrift.I64, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.DiagnosisID); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
-}
-func (p *AddSymptomRequest) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("symptom_id", thrift.I64, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.SymptomID); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
-}
-func (p *AddSymptomRequest) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("description", thrift.STRING, 3); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Description); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
-}
-func (p *AddSymptomRequest) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("start_time", thrift.I64, 4); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.StartTime); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
-}
-func (p *AddSymptomRequest) writeField5(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("signs_description", thrift.STRING, 5); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.SignsDescription); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
-}
-
-func (p *AddSymptomRequest) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("AddSymptomRequest(%+v)", *p)
-
-}
-
-type AddSymptomResponse struct {
-	Base *model.BaseResp `thrift:"base,1" form:"base" json:"base" query:"base"`
-}
-
-func NewAddSymptomResponse() *AddSymptomResponse {
-	return &AddSymptomResponse{}
-}
-
-func (p *AddSymptomResponse) InitDefault() {
-}
-
-var AddSymptomResponse_Base_DEFAULT *model.BaseResp
-
-func (p *AddSymptomResponse) GetBase() (v *model.BaseResp) {
-	if !p.IsSetBase() {
-		return AddSymptomResponse_Base_DEFAULT
-	}
-	return p.Base
-}
-
-var fieldIDToName_AddSymptomResponse = map[int16]string{
-	1: "base",
-}
-
-func (p *AddSymptomResponse) IsSetBase() bool {
-	return p.Base != nil
-}
-
-func (p *AddSymptomResponse) Read(iprot thrift.TProtocol) (err error) {
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 1:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_AddSymptomResponse[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *AddSymptomResponse) ReadField1(iprot thrift.TProtocol) error {
-	_field := model.NewBaseResp()
-	if err := _field.Read(iprot); err != nil {
-		return err
-	}
-	p.Base = _field
-	return nil
-}
-
-func (p *AddSymptomResponse) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("AddSymptomResponse"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField1(oprot); err != nil {
-			fieldId = 1
-			goto WriteFieldError
-		}
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *AddSymptomResponse) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("base", thrift.STRUCT, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := p.Base.Write(oprot); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
-}
-
-func (p *AddSymptomResponse) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("AddSymptomResponse(%+v)", *p)
 
 }
 
@@ -1909,8 +1565,6 @@ type ClinicalService interface {
 
 	AddDiagnose(ctx context.Context, req *AddDiagnoseRequest) (r *AddDiagnoseResponse, err error)
 
-	AddSymptom(ctx context.Context, req *AddSymptomRequest) (r *AddSymptomResponse, err error)
-
 	QueryCase(ctx context.Context, req *QueryCaseRequest) (r *QueryCaseResponse, err error)
 }
 
@@ -1958,15 +1612,6 @@ func (p *ClinicalServiceClient) AddDiagnose(ctx context.Context, req *AddDiagnos
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *ClinicalServiceClient) AddSymptom(ctx context.Context, req *AddSymptomRequest) (r *AddSymptomResponse, err error) {
-	var _args ClinicalServiceAddSymptomArgs
-	_args.Req = req
-	var _result ClinicalServiceAddSymptomResult
-	if err = p.Client_().Call(ctx, "AddSymptom", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
 func (p *ClinicalServiceClient) QueryCase(ctx context.Context, req *QueryCaseRequest) (r *QueryCaseResponse, err error) {
 	var _args ClinicalServiceQueryCaseArgs
 	_args.Req = req
@@ -1999,7 +1644,6 @@ func NewClinicalServiceProcessor(handler ClinicalService) *ClinicalServiceProces
 	self := &ClinicalServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
 	self.AddToProcessorMap("AddPatient", &clinicalServiceProcessorAddPatient{handler: handler})
 	self.AddToProcessorMap("AddDiagnose", &clinicalServiceProcessorAddDiagnose{handler: handler})
-	self.AddToProcessorMap("AddSymptom", &clinicalServiceProcessorAddSymptom{handler: handler})
 	self.AddToProcessorMap("QueryCase", &clinicalServiceProcessorQueryCase{handler: handler})
 	return self
 }
@@ -2100,54 +1744,6 @@ func (p *clinicalServiceProcessorAddDiagnose) Process(ctx context.Context, seqId
 		result.Success = retval
 	}
 	if err2 = oprot.WriteMessageBegin("AddDiagnose", thrift.REPLY, seqId); err2 != nil {
-		err = err2
-	}
-	if err2 = result.Write(oprot); err == nil && err2 != nil {
-		err = err2
-	}
-	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
-		err = err2
-	}
-	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
-		err = err2
-	}
-	if err != nil {
-		return
-	}
-	return true, err
-}
-
-type clinicalServiceProcessorAddSymptom struct {
-	handler ClinicalService
-}
-
-func (p *clinicalServiceProcessorAddSymptom) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := ClinicalServiceAddSymptomArgs{}
-	if err = args.Read(iprot); err != nil {
-		iprot.ReadMessageEnd()
-		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("AddSymptom", thrift.EXCEPTION, seqId)
-		x.Write(oprot)
-		oprot.WriteMessageEnd()
-		oprot.Flush(ctx)
-		return false, err
-	}
-
-	iprot.ReadMessageEnd()
-	var err2 error
-	result := ClinicalServiceAddSymptomResult{}
-	var retval *AddSymptomResponse
-	if retval, err2 = p.handler.AddSymptom(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing AddSymptom: "+err2.Error())
-		oprot.WriteMessageBegin("AddSymptom", thrift.EXCEPTION, seqId)
-		x.Write(oprot)
-		oprot.WriteMessageEnd()
-		oprot.Flush(ctx)
-		return true, err2
-	} else {
-		result.Success = retval
-	}
-	if err2 = oprot.WriteMessageBegin("AddSymptom", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -2794,298 +2390,6 @@ func (p *ClinicalServiceAddDiagnoseResult) String() string {
 		return "<nil>"
 	}
 	return fmt.Sprintf("ClinicalServiceAddDiagnoseResult(%+v)", *p)
-
-}
-
-type ClinicalServiceAddSymptomArgs struct {
-	Req *AddSymptomRequest `thrift:"req,1"`
-}
-
-func NewClinicalServiceAddSymptomArgs() *ClinicalServiceAddSymptomArgs {
-	return &ClinicalServiceAddSymptomArgs{}
-}
-
-func (p *ClinicalServiceAddSymptomArgs) InitDefault() {
-}
-
-var ClinicalServiceAddSymptomArgs_Req_DEFAULT *AddSymptomRequest
-
-func (p *ClinicalServiceAddSymptomArgs) GetReq() (v *AddSymptomRequest) {
-	if !p.IsSetReq() {
-		return ClinicalServiceAddSymptomArgs_Req_DEFAULT
-	}
-	return p.Req
-}
-
-var fieldIDToName_ClinicalServiceAddSymptomArgs = map[int16]string{
-	1: "req",
-}
-
-func (p *ClinicalServiceAddSymptomArgs) IsSetReq() bool {
-	return p.Req != nil
-}
-
-func (p *ClinicalServiceAddSymptomArgs) Read(iprot thrift.TProtocol) (err error) {
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 1:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ClinicalServiceAddSymptomArgs[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *ClinicalServiceAddSymptomArgs) ReadField1(iprot thrift.TProtocol) error {
-	_field := NewAddSymptomRequest()
-	if err := _field.Read(iprot); err != nil {
-		return err
-	}
-	p.Req = _field
-	return nil
-}
-
-func (p *ClinicalServiceAddSymptomArgs) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("AddSymptom_args"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField1(oprot); err != nil {
-			fieldId = 1
-			goto WriteFieldError
-		}
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *ClinicalServiceAddSymptomArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := p.Req.Write(oprot); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
-}
-
-func (p *ClinicalServiceAddSymptomArgs) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("ClinicalServiceAddSymptomArgs(%+v)", *p)
-
-}
-
-type ClinicalServiceAddSymptomResult struct {
-	Success *AddSymptomResponse `thrift:"success,0,optional"`
-}
-
-func NewClinicalServiceAddSymptomResult() *ClinicalServiceAddSymptomResult {
-	return &ClinicalServiceAddSymptomResult{}
-}
-
-func (p *ClinicalServiceAddSymptomResult) InitDefault() {
-}
-
-var ClinicalServiceAddSymptomResult_Success_DEFAULT *AddSymptomResponse
-
-func (p *ClinicalServiceAddSymptomResult) GetSuccess() (v *AddSymptomResponse) {
-	if !p.IsSetSuccess() {
-		return ClinicalServiceAddSymptomResult_Success_DEFAULT
-	}
-	return p.Success
-}
-
-var fieldIDToName_ClinicalServiceAddSymptomResult = map[int16]string{
-	0: "success",
-}
-
-func (p *ClinicalServiceAddSymptomResult) IsSetSuccess() bool {
-	return p.Success != nil
-}
-
-func (p *ClinicalServiceAddSymptomResult) Read(iprot thrift.TProtocol) (err error) {
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 0:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField0(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ClinicalServiceAddSymptomResult[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *ClinicalServiceAddSymptomResult) ReadField0(iprot thrift.TProtocol) error {
-	_field := NewAddSymptomResponse()
-	if err := _field.Read(iprot); err != nil {
-		return err
-	}
-	p.Success = _field
-	return nil
-}
-
-func (p *ClinicalServiceAddSymptomResult) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("AddSymptom_result"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField0(oprot); err != nil {
-			fieldId = 0
-			goto WriteFieldError
-		}
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *ClinicalServiceAddSymptomResult) writeField0(oprot thrift.TProtocol) (err error) {
-	if p.IsSetSuccess() {
-		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := p.Success.Write(oprot); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
-}
-
-func (p *ClinicalServiceAddSymptomResult) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("ClinicalServiceAddSymptomResult(%+v)", *p)
 
 }
 

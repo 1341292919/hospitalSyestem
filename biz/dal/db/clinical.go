@@ -47,25 +47,6 @@ func CreateDiagnose(ctx context.Context, diagnose *Diagnose) error {
 	}
 	return nil
 }
-func CreateSymptom(ctx context.Context, symptom *Symptom) error {
-	var s *Symptom
-	err := DB.WithContext(ctx).
-		Table(constants.TableSymptom).
-		Where("symptom_id = ? ", symptom.SymptomId).
-		First(&s).
-		Error
-	if err == nil {
-		return errno.NewErrNo(errno.InternalServiceErrorCode, "Symptom Exist")
-	}
-	err = DB.WithContext(ctx).
-		Table(constants.TableSymptom).
-		Create(symptom).
-		Error
-	if err != nil {
-		return errno.NewErrNo(errno.InternalDatabaseErrorCode, "Symptom.Create error"+err.Error())
-	}
-	return nil
-}
 
 func QueryMedicalCase(ctx context.Context, patientId int64) (*Case, error) {
 	var c *Case
