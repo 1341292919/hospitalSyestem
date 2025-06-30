@@ -4,12 +4,11 @@ package user
 
 import (
 	"Hospital/biz/middleware/jwt"
+	user "Hospital/biz/model/user"
 	"Hospital/biz/pack"
 	"Hospital/biz/service"
 	"Hospital/pkg/errno"
 	"context"
-
-	user "Hospital/biz/model/user"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -127,5 +126,29 @@ func Query(ctx context.Context, c *app.RequestContext) {
 	}
 	resp.Data = pack.User(UserResp)
 	resp.Base = pack.BuildBaseResp(errno.Success)
+	pack.SendResponse(c, resp)
+}
+
+// QueryUserList .
+// @router /user/admin/list [GET]
+func QueryUserList(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req user.QueryUserListRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		pack.SendFailResponse(c, errno.NewErrNo(errno.ParamMissingErrorCode, "param missing:"+err.Error()))
+		return
+	}
+
+	resp := new(user.QueryUserListResponse)
+
+	userListResp, err := service.NewUserService(ctx, c).QueryUserList(&req)
+	if err != nil {
+		pack.SendFailResponse(c, errno.ConvertErr(err))
+		return
+	}
+
+	resp.Base = pack.BuildBaseResp(errno.Success)
+	resp.Data = pack.UserList(userListResp)
 	pack.SendResponse(c, resp)
 }

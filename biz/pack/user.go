@@ -18,3 +18,11 @@ func User(data *db.User) *model.User {
 		CreatedAt:    data.CreateTime.Format("2006-01-02 15:04:05"),
 	}
 }
+
+func UserList(data []*db.User) []*model.User {
+	var users []*model.User
+	for _, v := range data {
+		users = append(users, User(v))
+	}
+	return users
+}

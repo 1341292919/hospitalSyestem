@@ -80,3 +80,16 @@ func (s *UserService) NewUser(req *user.NewUserRequest) (*db.User, error) {
 func (s *UserService) QueryUser(req *user.QueryUserRequest) (*db.User, error) {
 	return db.GetUserMessage(s.ctx, req.Type, req.ID)
 }
+
+func (s *UserService) QueryUserList(req *user.QueryUserListRequest) ([]*db.User, error) {
+	switch req.Type {
+	case 1: //管理员
+		return db.GetAdminList(s.ctx)
+	case 2: //医生
+		return db.GetDoctorList(s.ctx)
+	case 3: //护士
+		return db.GetNurseList(s.ctx)
+	}
+	return nil, errno.NewErrNo(errno.InternalServiceErrorCode, "invalid type")
+
+}

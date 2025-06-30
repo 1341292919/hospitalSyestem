@@ -339,3 +339,80 @@ func GetUserMessage(ctx context.Context, t, id int64) (*User, error) {
 	}
 	return nil, errno.NewErrNo(errno.InternalServiceErrorCode, "invalid type")
 }
+
+func GetAdminList(ctx context.Context) ([]*User, error) {
+	var admins []*Admin
+	err := DB.WithContext(ctx).
+		Table(constants.TableAdmin).
+		Find(&admins).
+		Error
+	if err != nil {
+		return nil, errno.NewErrNo(errno.InternalDatabaseErrorCode, "get admin list error"+err.Error())
+	}
+
+	result := make([]*User, 0, len(admins))
+	for _, admin := range admins {
+		result = append(result, &User{
+			Id:           admin.AdminId,
+			Name:         admin.Username,
+			CreateTime:   admin.CreateTime,
+			ContactPhone: admin.ContactPhone,
+		})
+
+	}
+
+	return result, nil
+}
+
+func GetDoctorList(ctx context.Context) ([]*User, error) {
+	var doctors []*Doctor
+	err := DB.WithContext(ctx).
+		Table(constants.TableDoctor).
+		Find(&doctors).
+		Error
+	if err != nil {
+		return nil, errno.NewErrNo(errno.InternalDatabaseErrorCode, "get doctor list error"+err.Error())
+	}
+
+	result := make([]*User, 0, len(doctors))
+	for _, doctor := range doctors {
+		result = append(result, &User{
+			Id:           doctor.DoctorId,
+			Name:         doctor.Name,
+			CreateTime:   doctor.CreateTime,
+			ContactPhone: doctor.ContactPhone,
+			Title:        doctor.Title,
+			Department:   doctor.Department,
+			Specialty:    doctor.Specialty,
+		})
+
+	}
+
+	return result, nil
+}
+
+func GetNurseList(ctx context.Context) ([]*User, error) {
+	var nurses []*Nurse
+	err := DB.WithContext(ctx).
+		Table(constants.TableNurse).
+		Find(&nurses).
+		Error
+	if err != nil {
+		return nil, errno.NewErrNo(errno.InternalDatabaseErrorCode, "get nurse list error"+err.Error())
+	}
+
+	result := make([]*User, 0, len(nurses))
+	for _, nurse := range nurses {
+		result = append(result, &User{
+			Id:           nurse.NurseId,
+			Name:         nurse.Name,
+			CreateTime:   nurse.CreateTime,
+			ContactPhone: nurse.ContactPhone,
+			Position:     nurse.Position,
+			Department:   nurse.Department,
+		})
+
+	}
+
+	return result, nil
+}
