@@ -45,11 +45,21 @@ func QueryEpidemicCase(ctx context.Context, patientId int64) (*EpidemicCase, err
 
 func QueryEpidemicCaseById(ctx context.Context, caseId int64) (*EpidemicCase, error) {
 	var s *EpidemicCase
-	err := DB.WithContext(ctx).
-		Table(constants.TableEpidemicCase).
-		Where("case_id = ?", caseId).
-		First(&s).
-		Error
+	var err error
+
+	if caseId == 0 {
+		err = DB.WithContext(ctx).
+			Table(constants.TableEpidemicCase).
+			First(&s).
+			Error
+	} else {
+		err = DB.WithContext(ctx).
+			Table(constants.TableEpidemicCase).
+			Where("case_id = ?", caseId).
+			First(&s).
+			Error
+	}
+
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, errno.NewErrNo(errno.InternalServiceErrorCode, "case not exist")
