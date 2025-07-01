@@ -37,13 +37,13 @@ type Case struct {
 	DiagnosisID    int64     `gorm:"column:diagnosis_id" json:"diagnosis_id"`
 	DoctorID       string    `gorm:"column:doctor_id" json:"doctor_id"`
 	DiseaseName    string    `gorm:"column:disease_name" json:"disease_name"`
+	Description    string    `gorm:"column:diagnosis_description" json:"description,omitempty"`
 	DiagnosisTime  time.Time `gorm:"column:diagnosis_time" json:"diagnosis_time"`
 	DiagnosisNotes string    `gorm:"column:diagnosis_notes" json:"diagnosis_notes"`
 	CreatedAt      time.Time `gorm:"column:diagnosis_created_at" json:"created_at"`
 
 	// 症状信息（可能为空）
 	SymptomID      int64     `gorm:"column:symptom_id" json:"symptom_id,omitempty"`
-	Description    string    `gorm:"column:symptom_description" json:"description,omitempty"`
 	StartTime      time.Time `gorm:"column:symptom_start_time" json:"start_time,omitempty"`
 	Signs          string    `gorm:"column:signs_description" json:"signs,omitempty"`
 	SymptomCreated time.Time `gorm:"column:symptom_created_at" json:"symptom_created_at,omitempty"`

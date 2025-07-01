@@ -60,6 +60,7 @@ func QueryMedicalCase(ctx context.Context, patientId int64) ([]*Case, int64, err
 	if err != nil {
 		return nil, -1, errno.NewErrNo(errno.InternalDatabaseErrorCode, "QueryMedicalCase: "+err.Error())
 	}
+
 	return c, count, nil
 }
 func QueryAllMedicalCase(ctx context.Context, patientId int64) ([]*Case, int64, error) {

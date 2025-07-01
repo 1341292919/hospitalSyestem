@@ -20,7 +20,7 @@ func Case(data *db.Case) *model.MedicalCase {
 		DiagnosisNotes:     data.DiagnosisNotes,
 		DiagnosisCreatedAt: data.CreatedAt.Format(time.RFC3339),
 		SymptomID:          data.SymptomID,
-		SymptomDescription: data.Description,
+		SymptomDescription: data.Description, //diagnosis_description
 		SymptomStartTime:   data.StartTime.Format(time.RFC3339),
 		SignsDescription:   data.Signs,
 		SymptomCreatedAt:   data.CreatedAt.Format(time.RFC3339),
