@@ -41,6 +41,11 @@ struct MedicalCase {
     16: required  string symptom_created_at   // 症状记录时间
 }
 
+struct MedicalCaseList {
+    1: required list<MedicalCase> items, // 医疗案例列表
+    2: required i64 total,                // 总记录数
+}
+
 struct VisitMessage {
     1: required string follow_up_id,           // 随访ID
     2: required string patient_id,             // 患者ID

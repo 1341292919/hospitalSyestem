@@ -3,12 +3,11 @@
 package clinical
 
 import (
+	clinical "Hospital/biz/model/clinical"
 	"Hospital/biz/pack"
 	"Hospital/biz/service"
 	"Hospital/pkg/errno"
 	"context"
-
-	clinical "Hospital/biz/model/clinical"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -68,12 +67,35 @@ func QueryCase(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := new(clinical.QueryCaseResponse)
-	ClinicalResp, err := service.NewClinicalService(ctx, c).QueryMedicalCase(&req)
+	ClinicalResp, count, err := service.NewClinicalService(ctx, c).QueryMedicalCase(&req)
 	if err != nil {
 		pack.SendFailResponse(c, errno.ConvertErr(err))
 		return
 	}
-	resp.Data = pack.Case(ClinicalResp)
+	resp.Data = pack.CaseList(ClinicalResp, count)
+	resp.Base = pack.BuildBaseResp(errno.Success)
+	pack.SendResponse(c, resp)
+}
+
+// QueryAllCase .
+// @router /clinical/case/all [GET]
+func QueryAllCase(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req clinical.QueryAllCaseRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		pack.SendFailResponse(c, errno.NewErrNo(errno.ParamMissingErrorCode, "param missing:"+err.Error()))
+		return
+	}
+
+	resp := new(clinical.QueryAllCaseResponse)
+
+	v, count, err := service.NewClinicalService(ctx, c).QueryAllMedicalCase(&req)
+	if err != nil {
+		pack.SendFailResponse(c, errno.ConvertErr(err))
+		return
+	}
+	resp.Data = pack.CaseList(v, count)
 	resp.Base = pack.BuildBaseResp(errno.Success)
 	pack.SendResponse(c, resp)
 }

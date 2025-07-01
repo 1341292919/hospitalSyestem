@@ -26,6 +26,16 @@ func Case(data *db.Case) *model.MedicalCase {
 		SymptomCreatedAt:   data.CreatedAt.Format(time.RFC3339),
 	}
 }
+func CaseList(data []*db.Case, count int64) *model.MedicalCaseList {
+	k := make([]*model.MedicalCase, 0)
+	for _, v := range data {
+		k = append(k, Case(v))
+	}
+	return &model.MedicalCaseList{
+		Items: k,
+		Total: count,
+	}
+}
 
 // Helper function to convert time pointer to string
 func timePtrToStr(t *time.Time) string {
