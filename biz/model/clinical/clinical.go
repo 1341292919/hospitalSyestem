@@ -1365,8 +1365,8 @@ func (p *QueryCaseRequest) String() string {
 }
 
 type QueryCaseResponse struct {
-	Base *model.BaseResp    `thrift:"base,1" form:"base" json:"base" query:"base"`
-	Data *model.MedicalCase `thrift:"data,2" form:"data" json:"data" query:"data"`
+	Base *model.BaseResp        `thrift:"base,1" form:"base" json:"base" query:"base"`
+	Data *model.MedicalCaseList `thrift:"data,2" form:"data" json:"data" query:"data"`
 }
 
 func NewQueryCaseResponse() *QueryCaseResponse {
@@ -1385,9 +1385,9 @@ func (p *QueryCaseResponse) GetBase() (v *model.BaseResp) {
 	return p.Base
 }
 
-var QueryCaseResponse_Data_DEFAULT *model.MedicalCase
+var QueryCaseResponse_Data_DEFAULT *model.MedicalCaseList
 
-func (p *QueryCaseResponse) GetData() (v *model.MedicalCase) {
+func (p *QueryCaseResponse) GetData() (v *model.MedicalCaseList) {
 	if !p.IsSetData() {
 		return QueryCaseResponse_Data_DEFAULT
 	}
@@ -1479,7 +1479,7 @@ func (p *QueryCaseResponse) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 func (p *QueryCaseResponse) ReadField2(iprot thrift.TProtocol) error {
-	_field := model.NewMedicalCase()
+	_field := model.NewMedicalCaseList()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -1560,12 +1560,357 @@ func (p *QueryCaseResponse) String() string {
 
 }
 
+type QueryAllCaseRequest struct {
+	PatientID int64 `thrift:"patient_id,1,required" form:"patient_id,required" json:"patient_id,required" query:"patient_id,required"`
+}
+
+func NewQueryAllCaseRequest() *QueryAllCaseRequest {
+	return &QueryAllCaseRequest{}
+}
+
+func (p *QueryAllCaseRequest) InitDefault() {
+}
+
+func (p *QueryAllCaseRequest) GetPatientID() (v int64) {
+	return p.PatientID
+}
+
+var fieldIDToName_QueryAllCaseRequest = map[int16]string{
+	1: "patient_id",
+}
+
+func (p *QueryAllCaseRequest) Read(iprot thrift.TProtocol) (err error) {
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetPatientID bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetPatientID = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetPatientID {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_QueryAllCaseRequest[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_QueryAllCaseRequest[fieldId]))
+}
+
+func (p *QueryAllCaseRequest) ReadField1(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.PatientID = _field
+	return nil
+}
+
+func (p *QueryAllCaseRequest) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("QueryAllCaseRequest"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *QueryAllCaseRequest) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("patient_id", thrift.I64, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.PatientID); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *QueryAllCaseRequest) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("QueryAllCaseRequest(%+v)", *p)
+
+}
+
+type QueryAllCaseResponse struct {
+	Base *model.BaseResp        `thrift:"base,1" form:"base" json:"base" query:"base"`
+	Data *model.MedicalCaseList `thrift:"data,2" form:"data" json:"data" query:"data"`
+}
+
+func NewQueryAllCaseResponse() *QueryAllCaseResponse {
+	return &QueryAllCaseResponse{}
+}
+
+func (p *QueryAllCaseResponse) InitDefault() {
+}
+
+var QueryAllCaseResponse_Base_DEFAULT *model.BaseResp
+
+func (p *QueryAllCaseResponse) GetBase() (v *model.BaseResp) {
+	if !p.IsSetBase() {
+		return QueryAllCaseResponse_Base_DEFAULT
+	}
+	return p.Base
+}
+
+var QueryAllCaseResponse_Data_DEFAULT *model.MedicalCaseList
+
+func (p *QueryAllCaseResponse) GetData() (v *model.MedicalCaseList) {
+	if !p.IsSetData() {
+		return QueryAllCaseResponse_Data_DEFAULT
+	}
+	return p.Data
+}
+
+var fieldIDToName_QueryAllCaseResponse = map[int16]string{
+	1: "base",
+	2: "data",
+}
+
+func (p *QueryAllCaseResponse) IsSetBase() bool {
+	return p.Base != nil
+}
+
+func (p *QueryAllCaseResponse) IsSetData() bool {
+	return p.Data != nil
+}
+
+func (p *QueryAllCaseResponse) Read(iprot thrift.TProtocol) (err error) {
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_QueryAllCaseResponse[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *QueryAllCaseResponse) ReadField1(iprot thrift.TProtocol) error {
+	_field := model.NewBaseResp()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Base = _field
+	return nil
+}
+func (p *QueryAllCaseResponse) ReadField2(iprot thrift.TProtocol) error {
+	_field := model.NewMedicalCaseList()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Data = _field
+	return nil
+}
+
+func (p *QueryAllCaseResponse) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("QueryAllCaseResponse"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *QueryAllCaseResponse) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("base", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Base.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+func (p *QueryAllCaseResponse) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("data", thrift.STRUCT, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Data.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *QueryAllCaseResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("QueryAllCaseResponse(%+v)", *p)
+
+}
+
 type ClinicalService interface {
 	AddPatient(ctx context.Context, req *AddPatientRequest) (r *AddPatientResponse, err error)
 
 	AddDiagnose(ctx context.Context, req *AddDiagnoseRequest) (r *AddDiagnoseResponse, err error)
 
 	QueryCase(ctx context.Context, req *QueryCaseRequest) (r *QueryCaseResponse, err error)
+
+	QueryAllCase(ctx context.Context, req *QueryAllCaseRequest) (r *QueryAllCaseResponse, err error)
 }
 
 type ClinicalServiceClient struct {
@@ -1621,6 +1966,15 @@ func (p *ClinicalServiceClient) QueryCase(ctx context.Context, req *QueryCaseReq
 	}
 	return _result.GetSuccess(), nil
 }
+func (p *ClinicalServiceClient) QueryAllCase(ctx context.Context, req *QueryAllCaseRequest) (r *QueryAllCaseResponse, err error) {
+	var _args ClinicalServiceQueryAllCaseArgs
+	_args.Req = req
+	var _result ClinicalServiceQueryAllCaseResult
+	if err = p.Client_().Call(ctx, "QueryAllCase", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
 
 type ClinicalServiceProcessor struct {
 	processorMap map[string]thrift.TProcessorFunction
@@ -1645,6 +1999,7 @@ func NewClinicalServiceProcessor(handler ClinicalService) *ClinicalServiceProces
 	self.AddToProcessorMap("AddPatient", &clinicalServiceProcessorAddPatient{handler: handler})
 	self.AddToProcessorMap("AddDiagnose", &clinicalServiceProcessorAddDiagnose{handler: handler})
 	self.AddToProcessorMap("QueryCase", &clinicalServiceProcessorQueryCase{handler: handler})
+	self.AddToProcessorMap("QueryAllCase", &clinicalServiceProcessorQueryAllCase{handler: handler})
 	return self
 }
 func (p *ClinicalServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -1792,6 +2147,54 @@ func (p *clinicalServiceProcessorQueryCase) Process(ctx context.Context, seqId i
 		result.Success = retval
 	}
 	if err2 = oprot.WriteMessageBegin("QueryCase", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type clinicalServiceProcessorQueryAllCase struct {
+	handler ClinicalService
+}
+
+func (p *clinicalServiceProcessorQueryAllCase) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := ClinicalServiceQueryAllCaseArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("QueryAllCase", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := ClinicalServiceQueryAllCaseResult{}
+	var retval *QueryAllCaseResponse
+	if retval, err2 = p.handler.QueryAllCase(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing QueryAllCase: "+err2.Error())
+		oprot.WriteMessageBegin("QueryAllCase", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("QueryAllCase", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -2682,5 +3085,297 @@ func (p *ClinicalServiceQueryCaseResult) String() string {
 		return "<nil>"
 	}
 	return fmt.Sprintf("ClinicalServiceQueryCaseResult(%+v)", *p)
+
+}
+
+type ClinicalServiceQueryAllCaseArgs struct {
+	Req *QueryAllCaseRequest `thrift:"req,1"`
+}
+
+func NewClinicalServiceQueryAllCaseArgs() *ClinicalServiceQueryAllCaseArgs {
+	return &ClinicalServiceQueryAllCaseArgs{}
+}
+
+func (p *ClinicalServiceQueryAllCaseArgs) InitDefault() {
+}
+
+var ClinicalServiceQueryAllCaseArgs_Req_DEFAULT *QueryAllCaseRequest
+
+func (p *ClinicalServiceQueryAllCaseArgs) GetReq() (v *QueryAllCaseRequest) {
+	if !p.IsSetReq() {
+		return ClinicalServiceQueryAllCaseArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+var fieldIDToName_ClinicalServiceQueryAllCaseArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *ClinicalServiceQueryAllCaseArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *ClinicalServiceQueryAllCaseArgs) Read(iprot thrift.TProtocol) (err error) {
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ClinicalServiceQueryAllCaseArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *ClinicalServiceQueryAllCaseArgs) ReadField1(iprot thrift.TProtocol) error {
+	_field := NewQueryAllCaseRequest()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Req = _field
+	return nil
+}
+
+func (p *ClinicalServiceQueryAllCaseArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("QueryAllCase_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *ClinicalServiceQueryAllCaseArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *ClinicalServiceQueryAllCaseArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ClinicalServiceQueryAllCaseArgs(%+v)", *p)
+
+}
+
+type ClinicalServiceQueryAllCaseResult struct {
+	Success *QueryAllCaseResponse `thrift:"success,0,optional"`
+}
+
+func NewClinicalServiceQueryAllCaseResult() *ClinicalServiceQueryAllCaseResult {
+	return &ClinicalServiceQueryAllCaseResult{}
+}
+
+func (p *ClinicalServiceQueryAllCaseResult) InitDefault() {
+}
+
+var ClinicalServiceQueryAllCaseResult_Success_DEFAULT *QueryAllCaseResponse
+
+func (p *ClinicalServiceQueryAllCaseResult) GetSuccess() (v *QueryAllCaseResponse) {
+	if !p.IsSetSuccess() {
+		return ClinicalServiceQueryAllCaseResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+var fieldIDToName_ClinicalServiceQueryAllCaseResult = map[int16]string{
+	0: "success",
+}
+
+func (p *ClinicalServiceQueryAllCaseResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *ClinicalServiceQueryAllCaseResult) Read(iprot thrift.TProtocol) (err error) {
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ClinicalServiceQueryAllCaseResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *ClinicalServiceQueryAllCaseResult) ReadField0(iprot thrift.TProtocol) error {
+	_field := NewQueryAllCaseResponse()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Success = _field
+	return nil
+}
+
+func (p *ClinicalServiceQueryAllCaseResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("QueryAllCase_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *ClinicalServiceQueryAllCaseResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *ClinicalServiceQueryAllCaseResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ClinicalServiceQueryAllCaseResult(%+v)", *p)
 
 }

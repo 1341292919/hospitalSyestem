@@ -55,3 +55,8 @@ func _addsymptomMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _queryallcaseMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

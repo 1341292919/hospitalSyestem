@@ -48,18 +48,33 @@ func CreateDiagnose(ctx context.Context, diagnose *Diagnose) error {
 	return nil
 }
 
-func QueryMedicalCase(ctx context.Context, patientId int64) (*Case, error) {
-	var c *Case
+func QueryMedicalCase(ctx context.Context, patientId int64) ([]*Case, int64, error) {
+	var c []*Case
+	var count int64
 	err := DB.WithContext(ctx).
 		Table(constants.ViewMedicalCase).
 		Where("patient_id=?", patientId).
-		First(&c).
+		Count(&count).
+		Find(&c).
+		Error
+	if err != nil {
+		return nil, -1, errno.NewErrNo(errno.InternalDatabaseErrorCode, "QueryMedicalCase: "+err.Error())
+	}
+	return c, count, nil
+}
+func QueryAllMedicalCase(ctx context.Context, patientId int64) ([]*Case, int64, error) {
+	var c []*Case
+	var count int64
+	err := DB.WithContext(ctx).
+		Table(constants.ViewMedicalCase).
+		Count(&count).
+		Find(&c).
 		Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, errno.NewErrNo(errno.InternalServiceErrorCode, "the medical case not exist")
+			return nil, -1, errno.NewErrNo(errno.InternalServiceErrorCode, "the medical case not exist")
 		}
-		return nil, errno.NewErrNo(errno.InternalDatabaseErrorCode, "QueryMedicalCase: "+err.Error())
+		return nil, -1, errno.NewErrNo(errno.InternalDatabaseErrorCode, "QueryMedicalCase: "+err.Error())
 	}
-	return c, nil
+	return c, count, nil
 }

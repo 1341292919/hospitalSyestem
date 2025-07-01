@@ -41,6 +41,9 @@ func (s *ClinicalService) CreateDiagnose(req *clinical.AddDiagnoseRequest) error
 	})
 }
 
-func (s *ClinicalService) QueryMedicalCase(req *clinical.QueryCaseRequest) (*db.Case, error) {
+func (s *ClinicalService) QueryMedicalCase(req *clinical.QueryCaseRequest) ([]*db.Case, int64, error) {
 	return db.QueryMedicalCase(s.ctx, req.PatientID)
+}
+func (s *ClinicalService) QueryAllMedicalCase(req *clinical.QueryAllCaseRequest) ([]*db.Case, int64, error) {
+	return db.QueryAllMedicalCase(s.ctx, req.PatientID)
 }

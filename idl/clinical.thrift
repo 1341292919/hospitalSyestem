@@ -32,12 +32,19 @@ struct QueryCaseRequest{
 }
 struct QueryCaseResponse{
      1: model.BaseResp base,
-     2: model.MedicalCase data,
+     2: model.MedicalCaseList data,
 }
-
+struct QueryAllCaseRequest{
+    1:required i64  patient_id,
+}
+struct QueryAllCaseResponse{
+     1: model.BaseResp base,
+        2: model.MedicalCaseList data,
+}
 service ClinicalService {
     AddPatientResponse AddPatient(1:AddPatientRequest req)(api.post="/clinical/patient/add"),
     AddDiagnoseResponse AddDiagnose(1:AddDiagnoseRequest req)(api.post="/clinical/diagnose/add"),
     QueryCaseResponse QueryCase(1:QueryCaseRequest req)(api.get="/clinical/case/info"),
+    QueryAllCaseResponse QueryAllCase(1:QueryAllCaseRequest req)(api.get="/clinical/case/all"),
 }
 

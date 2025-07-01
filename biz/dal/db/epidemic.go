@@ -48,7 +48,7 @@ func QueryEpidemicCase(ctx context.Context, patientId int64) ([]*EpidemicCase, e
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, errno.NewErrNo(errno.InternalServiceErrorCode, "patient‘s case not exist")
 		}
-		return nil, errno.NewErrNo(errno.InternalDatabaseErrorCode, "QueryEpidemicCase"+err.Error())
+		return nil, errno.NewErrNo(errno.InternalDatabaseErrorCode, "QueryEpidemicCase:"+err.Error())
 	}
 	return s, nil
 }
@@ -67,7 +67,7 @@ func QueryEpidemicCaseById(ctx context.Context, caseId int64) (*EpidemicCase, er
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, errno.NewErrNo(errno.InternalServiceErrorCode, "case not exist")
 		}
-		return nil, errno.NewErrNo(errno.InternalDatabaseErrorCode, "QueryEpidemicCase"+err.Error())
+		return nil, errno.NewErrNo(errno.InternalDatabaseErrorCode, "QueryEpidemicCase:"+err.Error())
 	}
 	return s, nil
 }

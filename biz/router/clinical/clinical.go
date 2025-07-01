@@ -21,6 +21,7 @@ func Register(r *server.Hertz) {
 		_clinical := root.Group("/clinical", _clinicalMw()...)
 		{
 			_case := _clinical.Group("/case", _caseMw()...)
+			_case.GET("/all", append(_queryallcaseMw(), clinical.QueryAllCase)...)
 			_case.GET("/info", append(_querycaseMw(), clinical.QueryCase)...)
 		}
 		{
