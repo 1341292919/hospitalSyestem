@@ -4,10 +4,10 @@
 
 #### 1.无mysql
 
-1.1.启动mysql
+1.1.启动  mysql
 ```bash
 make env-up
-``` 
+```
 1.2.直接运行
 ```bash
 make target
