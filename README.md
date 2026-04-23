@@ -6,7 +6,7 @@
 
 1.1.启动  mysql
 ```bash
-make env-up
+make env-up  
 ```
 1.2.直接运行
 ```bash
